@@ -7,7 +7,7 @@
 
 # # Setup
 
-# In[1]:
+# In[50]:
 
 
 import csv
@@ -25,14 +25,14 @@ import numpy as np
 import pandas as pd
 
 
-# In[2]:
+# In[51]:
 
 
 # create pretty printer for dict object
 pp = pprint.PrettyPrinter(indent=4)
 
 
-# In[3]:
+# In[52]:
 
 
 data_dir = '../../../data/brewery-db/src/'
@@ -40,7 +40,7 @@ data_dir = '../../../data/brewery-db/src/'
 
 # # Initial Exploration
 
-# In[4]:
+# In[53]:
 
 
 # read json into dataframe object
@@ -48,28 +48,28 @@ fpath = os.path.abspath(os.path.join(data_dir, '1.json'))
 page = pd.read_json(fpath)
 
 
-# In[5]:
+# In[54]:
 
 
 # get first entry
 beer = page['data'][0]
 
 
-# In[6]:
+# In[55]:
 
 
 # print keys
 beer.keys()
 
 
-# In[7]:
+# In[56]:
 
 
 # print as dict
 pp.pprint(beer)
 
 
-# In[8]:
+# In[57]:
 
 
 for k in beer.keys():
@@ -740,7 +740,7 @@ for k in beer.keys():
 
 # ## Create DataFrames
 
-# In[9]:
+# In[58]:
 
 
 # get first entry
@@ -748,86 +748,87 @@ fpath = os.path.abspath(os.path.join(data_dir, '1.json'))
 obj = page['data'][0]
 
 
-# In[10]:
+# In[59]:
 
 
 # create beers dataframe
-columns = [str(k) for k in obj.keys() if str(k) not in ['breweries', 'style', 'srm', 'glass']]
+columns = [k for k in obj.keys() if str(k) not in ['breweries', 'style', 'srm', 'glass']]
 beers = pd.DataFrame(columns=columns)
 
 
-# In[11]:
+# In[60]:
 
 
 # create srms dataframe
-columns = [str(k) for k in obj['srm'].keys()]
+columns = [k for k in obj[u'srm'].keys()]
 srms = pd.DataFrame(columns=columns)
 
 
-# In[12]:
+# In[61]:
 
 
 # create glasses dataframe
-columns = [str(k) for k in obj['glass'].keys()]
+columns = [k for k in obj[u'glass'].keys()]
 glasses = pd.DataFrame(columns=columns)
 
 
-# In[13]:
+# In[62]:
 
 
 # create styles dataframe
-columns = [str(k) for k in obj['style'].keys() if str(k) not in ['category']]
-glasses = pd.DataFrame(columns=columns)
+columns = [k for k in obj[u'style'].keys() if str(k) not in ['category']]
+styles = pd.DataFrame(columns=columns)
 
 
-# In[14]:
+# In[63]:
 
 
 # create categories dataframe
-columns = [str(k) for k in obj['style']['category'].keys()]
+columns = [k for k in obj[u'style'][u'category'].keys()]
 categories = pd.DataFrame(columns=columns)
 
 
-# In[15]:
+# In[64]:
 
 
 # create breweries dataframe
-columns = [str(k) for k in obj['breweries'][0].keys() if str(k) not in ['locations']]
+columns = [k for k in obj[u'breweries'][0].keys() if str(k) not in ['locations']]
 breweries = pd.DataFrame(columns=columns)
 
 
-# In[16]:
+# In[65]:
 
 
 # create images dataframe
-columns = [str(k) for k in obj['breweries'][0]['images'].keys()]
+columns = [k for k in obj[u'breweries'][0][u'images'].keys()]
 images = pd.DataFrame(columns=columns)
+images[u'brewery_id'] = None
 
 
-# In[17]:
+# In[66]:
 
 
 # create locations dataframe
-columns = [str(k) for k in obj['breweries'][0]['locations'][0].keys() if str(k) not in ['country']]
+columns = [k for k in obj[u'breweries'][0][u'locations'][0].keys() if str(k) not in ['country']]
 locations = pd.DataFrame(columns=columns)
 
 
-# In[18]:
+# In[67]:
 
 
 # create countries dataframe
-columns = [str(k) for k in obj['breweries'][0]['locations'][0]['country'].keys() if str(k) not in ['country']]
+columns = [k for k in obj[u'breweries'][0][u'locations'][0][u'country'].keys() if str(k) not in ['country']]
 countries = pd.DataFrame(columns=columns)
 
 
-# In[19]:
+# In[68]:
 
 
 # create brewery_beer dataframe for relationship
 brewery_beer = pd.DataFrame(columns=['brewery_id', 'beer_id'])
 
 
-# In[20]:
+# In[69]:
 
 
 # create brewery_location dataframe for relationship
@@ -836,26 +837,195 @@ brewery_location = pd.DataFrame(columns=['brewery_id', 'location_id'])
 
 # ## Parse Data
 
-# In[21]:
+# In[70]:
+
+
+beers.columns.tolist()
+
+
+# In[147]:
+
+
+errors = []
+
+# helper functions
+def append_record(data, df, id='id'):
+    if id is None:
+        df = df.append(data, ignore_index=True)
+    elif not data.iloc[0][id] in df[id].tolist():
+        df = df.append(data, ignore_index=True)
+    return df
+
+
+def get_beer(r):
+    global beers
+    # build beer object
+    beer = pd.DataFrame([r], columns=r.keys())
+    
+    for c in beer.columns:
+        if not c in beers.columns.tolist():
+            del beer[c]
+    
+    # append to beers dataframe
+    beers = append_record(beer, beers)
+    
+    return
+
+def get_srm(r):
+    global srms
+    try:
+        # get srm object
+        srm = pd.DataFrame([r], columns=r[u'srm'].keys())
+        
+        # append to srms dataframe
+        srms = append_record(srm, srms)
+    except Exception as e: 
+        errors.append(dict(page=page, error=str(e)))
+        pass
+        
+    return
+
+def get_glass(r):
+    global glasses
+    try:
+        # get glass object
+        glass = pd.DataFrame([r[u'glass']], columns=r[u'glass'].keys())
+        
+        # append to glasses dataframe
+        glasses = append_record(glass, glasses)
+    except Exception as e: 
+        errors.append(dict(page=page, error=str(e)))
+        pass
+    
+    return
+
+def get_category(r):
+    global categories
+    try:
+        # get category object
+        category = pd.DataFrame([r[u'category']], columns=r[u'category'].keys())
+
+        # append to categories dataframe
+        categories = append_record(category, categories)
+    
+    except Exception as e: 
+        errors.append(dict(page=page, error=str(e)))
+        pass
+    
+    return
+
+def get_style(r):
+    global styles
+    try:
+        # get style object
+        style = pd.DataFrame([r[u'style']], columns=r[u'style'].keys())
+
+        # get category object
+        get_category(r[u'style'])
+    
+        # drop category column
+        del style[u'category']
+        
+        # append to styles dataframe
+        styles = append_record(style, styles)
+    
+    except Exception as e: 
+        errors.append(dict(page=page, error=str(e)))
+        pass
+    
+    return
+
+def get_images(r):
+    global images
+    try:
+        # get images objects
+        image = r[u'images'].iloc[0]
+        image = pd.DataFrame([image], columns=image.keys())
+        image[u'brewery_id'] = r[u'id']
+
+        # append image record to images dataframe
+        images = append_record(image, images, id=None)
+    except Exception as e: 
+        errors.append(dict(page=page, error=str(e)))
+        pass
+    return
+
+def get_country(r):
+    global countries
+    try:
+        country = r[u'country']
+        country = pd.DataFrame([country], columns=country.keys())
+
+        # append country to countries dataframe
+        countries = append_record(country, countries, id=u'countryIsoCode')
+    except Exception as e: 
+        errors.append(dict(page=page, error=str(e)))
+        pass
+    
+    return
+
+def get_locations(r):
+    global brewery_location
+    global locations
+    try:
+        location_list = r[u'locations']
+        location_list[u'brewery_id'] = r[u'id']
+
+        # append locations to locations dataframe
+        for location in location_list.iloc[0]:
+            location = pd.DataFrame([location], columns=location.keys())
+            # get country object
+            get_country(location)
+            
+            del location[u'country']
+            # append to locations dataframe
+            locations = append_record(location, locations)
+
+            # append (brewery_id, location_id) to brewery_location dataframe
+            bl = pd.DataFrame([r[u'id'], location[u'id']], columns=['brewery_id', 'beer_id'])
+            brewery_location = append_record(bl, brewery_location, id=None)
+    except Exception as e: 
+        errors.append(dict(page=page, error=str(e)))
+        pass
+        
+    return
+
+def get_breweries(r):
+    global breweries
+    global brewery_beer
+    try:
+        brewery_list = r[u'breweries']
+        for brewery in brewery_list:
+            brewery = pd.DataFrame([brewery], columns=brewery.keys())
+            # append brewery to breweries dataframe
+            breweries = append_record(brewery, breweries)
+
+            # get images
+            get_images(brewery)
+
+            # get locations
+            get_locations(brewery)
+
+            # append (beer_id, brewery_id) to brewery_beer dataframe
+            bb = pd.DataFrame(dict(brewery_id=brewery['id'], beer_id=r['id']))
+            brewery_beer = append_record(bb, brewery_beer, id=None)
+    except Exception as e: 
+        errors.append(dict(page=page, error=str(e)))
+        pass
+
+    return
+
+
+# In[148]:
 
 
 # global variables
 num_fetch_threads = 10
-errors = []
 queue = Queue()
 
-
-# In[22]:
-
-
-beers.columns
-
-
-# In[34]:
-
-
 # build queue
-pages = range(1, 1295)
+#pages = range(1, 1295)
+pages = range(1, 25)
 for page in pages:
     q = page
     queue.put(q)
@@ -875,63 +1045,7 @@ def clean_row(x):
 p = FloatProgress(min=0, max=queue.qsize(), description="Parsing pages")
 display(p)
 
-def append_record(data, df, id='id'):
-    if not data[id] in df[id].tolist():
-        df.append(data, ignore_index=True)
-    return
 
-def get_object(r, df):
-    data = pd.DataFrame()
-    for c in df.columns:
-        data[c] = r[c]
-    return data
-
-def get_beer(r):
-    # build beer object
-    beer = get_object(r, beers)
-    
-    # append to beers dataframe
-    append_record(beer, beers)
-    
-    return
-
-def get_srm(r):
-    # get srm object
-    srm = pd.DataFrame(r['srm'])
-    
-    # append to srms dataframe
-    append_record(srm, srms)
-    
-    return
-
-def get_glass(r):
-    # get glass object
-    glass = pd.DataFrame(r['glass'])
-    return
-
-def get_category(r):
-    return
-
-def get_style(r):
-    get_category(r)
-    return
-
-def get_images(r):
-    return
-
-def get_country(r):
-    return
-
-def get_locations(r):
-    get_country(r)
-    return
-
-def get_breweries(r):
-    get_images(r)
-    get_locations(r)
-    # append (beer_id, brewery_id) to brewery_beer dataframe
-    # append (brewery_id, location_id) to brewery_location dataframe
-    return
 
 #define worker
 def parse_data(i, q):
@@ -940,20 +1054,53 @@ def parse_data(i, q):
         page_number = q.get()
         fpath = os.path.abspath(os.path.join(data_dir, '{}.json'.format(page_number)))
         page = pd.read_json(fpath)
-
+        
         #get beer data from json
         records = page['data']
         
-        # iterate over records
-        for r in records:
-            get_beer(r)
-            get_srm(r)
-            get_glass(r)
-            get_style(r)
-            get_breweries(r)
-        
-        return
-            
+        try:
+            # iterate over records
+            for r in records:
+                get_beer(r)
+                get_srm(r)
+                get_glass(r)
+                get_style(r)
+                get_breweries(r)
+        except Exception as e: 
+            errors.append(dict(page=page, error=str(e)))
+            pass
+        p.value += 1
+        q.task_done()
+
+# open threads
+for i in range(num_fetch_threads):
+    worker = Thread(target=parse_data, args=(i, queue,))
+    worker.setDaemon(True)
+    worker.start()
+
+# start task queue
+queue.join()
+
+# send errors to csv
+errors = pd.DataFrame(errors)
+
+
+# In[134]:
+
+
+errors.to_csv('~/Desktop/test.csv')
+
+
+# In[149]:
+
+
+locations.head(10000)
+
+
+# In[ ]:
+
+
+beers['id'].tolist()
 
 
 # In[ ]:
