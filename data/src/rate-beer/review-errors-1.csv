@@ -1,0 +1,55 @@
+beer_id,error,name
+15,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/weihenstephaner-hefeweissbier/1156/1/3/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc5c139a7d0>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Weihenstephaner Hefeweissbier
+14,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/stillwater-barrel-aged-series--cellar-door/152174/1/4/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc59658ded0>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Stillwater Barrel Aged Series - Cellar Door
+17,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/paradox-beer-skully-barrel-no-30-salty-melons/355182/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc59658d2d0>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Paradox Beer Skully Barrel No. 30 (Salty Melons)
+2,"HTTPSConnectionPool(host='www.ratebeer.com', port=443): Max retries exceeded with url: /beer/stillwater-gose-gone-wild/266266/1/13/ (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7fc59704bed0>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Stillwater Gose Gone Wild
+16,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/arizona-wilderness-blood-orange-gose/418985/1/1/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc5973ddc10>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Arizona Wilderness Blood Orange Gose
+3,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/schneider-weisse-aventinus/2224/1/13/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc596e18a50>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Schneider Weisse Aventinus
+11,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/brooklyner-schneider-hopfen-weisse/78068/1/7/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc596f53bd0>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Brooklyner-Schneider Hopfen-Weisse
+10,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/new-glarus-dancing-man-wheat/74630/1/7/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc5b811d910>: Failed to establish a new connection: [Errno -2] Name or service not known',))",New Glarus Dancing Man Wheat
+24,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/live-oak-hefe-weizen/902/1/19/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc5b836e9d0>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Live Oak Hefe Weizen
+35,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/ayinger-weizen-bock/56837/1/3/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc5c137e710>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Ayinger Weizen-Bock
+18,"HTTPSConnectionPool(host='www.ratebeer.com', port=443): Max retries exceeded with url: /beer/kormoran-podroze-kormorana-witbier/222084/1/22/ (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7fc5966fbdd0>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Kormoran Podroze Kormorana Witbier
+25,"HTTPSConnectionPool(host='www.ratebeer.com', port=443): Max retries exceeded with url: /beer/three-floyds-gumballhead/22764/1/18/ (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7fc596185ad0>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Three Floyds Gumballhead
+13,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/new-glarus-thumbprint-series-imperial-weizen/83995/1/30/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc5b811d990>: Failed to establish a new connection: [Errno -2] Name or service not known',))",New Glarus Thumbprint Series Imperial Weizen
+37,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/to-ol-santa-gose-f-it-all/461125/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc597216750>: Failed to establish a new connection: [Errno -2] Name or service not known',))",To ??l Santa Gose F%-It All
+21,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/schneider-weisse-tap-5-meine-hopfen-weisse/75466/1/24/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc596a02490>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Schneider Weisse Tap 5 Meine Hopfen-Weisse
+30,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/weihenstephaner-vitus/70791/1/15/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc596d51090>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Weihenstephaner Vitus
+29,"HTTPSConnectionPool(host='www.ratebeer.com', port=443): Max retries exceeded with url: /beer/westbrook-gozu/236139/1/13/ (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x7fc5966fbc50>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Westbrook Gozu
+36,"HTTPConnectionPool(host='www.ratebeer.com', port=80): Max retries exceeded with url: /beer/anchorage-whiteout-wit-bier/146191/1/1/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fc5b8046d10>: Failed to establish a new connection: [Errno -2] Name or service not known',))",Anchorage Whiteout Wit Bier
+192,[],3.86
+250,[],3.54
+402,[],3.5
+627,"[single hop, nugget, milk stout, lactose, coffee, cold brew, non vegan]",
+708,"[collaboration, rye, rye ipa]",
+874,Sak?? - Ginjo, Yeast: #10.
+876,[],3.54
+1037,[],
+1520,[],3.77
+1601,Sak?? - Ginjo, Yeast: #10.
+1606,/beerstyles/sake--ginjo/86/,"https://res.cloudinary.com/ratebeer/image/upload/w_120,c_limit/beer_28845.jpg"
+1639,[mosaic],
+1676,[],
+1774,/beer/chotovinsky-vienna-spezial-lager-??1913o??/207571/,Chotovinsk?? Vienna Spezial Lager ??1913????
+1946,[],
+2098,[amarillo],
+2124,"[amarillo, cascade, maris otter]",
+2130,[],
+2743,[],3.41
+3349,[],3.86
+3355,[],3.91
+3471,[],
+3488,[],
+3508,[],3.58
+3533,[],
+3602,[],3.57
+3610,[],3.56
+3640,[],3.44
+3675,[],
+3691,[],3.8
+4109,[],3.66
+4177,[],
+4207,/beerstyles/dunkler-bock/9/,"https://res.cloudinary.com/ratebeer/image/upload/w_120,c_limit/beer_38675.jpg"
+4249,"[lemon, lactose]",
+4332,[],3.68
+4340,[],3.8
