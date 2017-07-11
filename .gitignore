@@ -1,1 +1,4 @@
 **/creds.py
+
+data/src/brewery-db/*
+data/wrk/brewery-db/*
