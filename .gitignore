@@ -1,5 +1,3 @@
 **/creds.py
 
-data/src/brewery-db/*
-data/src/location-data/geojson-data/*
-data/wrk/brewery-db/*
+data/*
