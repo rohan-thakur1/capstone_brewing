@@ -4,3 +4,4 @@ data/src/brewery-db/*
 data/src/location-data/geojson-data/*
 data/wrk/ratebeer/reviews.csv
 data/wrk/*
+data/tfm/*
