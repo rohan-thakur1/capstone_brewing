@@ -24,8 +24,8 @@ beer_style = read.csv("beer_style.csv")
 names(beer)
 names(beer_style)
 
-beer_sub = beer[,c("id","abv","brewery_id","calories", "ibu", "name",
-                   "num_ratings","overall_rating","beer_style_id")]
+beer_sub = beer[,c("id","brewery_id","beer_style_id","abv","calories", "ibu", 
+                   "name", "description","num_ratings","overall_rating","beer_style_rating","mean_rating")]
 beer_style_sub = beer_style[,c("id","name")]
 names(beer_style_sub) = c("beer_style_id", "beer_style_name")
 
@@ -61,20 +61,22 @@ brewery = read.csv("brewery.csv")
 brewery_type = read.csv("brewery_type.csv")
 head(brewery_type)
 
-brewery_sub = brewery[,c("id","name","location_id","postal_code","brewery_type_id")]
+names(brewery)
+
+brewery_sub = brewery[,c("id","name","location_id","postal_code","country","brewery_type_id")]
 names(brewery_type) = c("brewery_type_id","brewery_type")
-names(brewery_sub) = c("brewery_id", "brewery_name","location_id","zip_code","brewery_type_id")
+names(brewery_sub) = c("brewery_id", "brewery_name","location_id","zip_code","country","brewery_type_id")
 
 brewery_merged = left_join(brewery_sub, brewery_type, by = "brewery_type_id")
 head(brewery_merged, 10)
 
-beer_merged$brewery_id = as.character(beer_eda$brewery_id)
-brewery_merged$brewery_id = as.character(brewery_eda$brewery_id)
+beer_merged$brewery_id = as.character(beer_merged$brewery_id)
+brewery_merged$brewery_id = as.character(brewery_merged$brewery_id)
 
 beer_merged2 = inner_join(beer_merged, brewery_merged, by = "brewery_id")
 names(beer_merged2)
-beer_eda = beer_merged2[,c("id","name","ibu","abv","calories","beer_style_name","beer_style_norm",
-                       "num_ratings","overall_rating","brewery_name","brewery_type","location_id","zip_code")]
+beer_eda = beer_merged2[,c(1:3,19,7:8,4:6,9:15,20,16:18)]
+names(beer_eda)
 
 # Convert num_ratings factor into numeric
 beer_eda$num_ratings = as.numeric(gsub(",","",as.character(beer_eda$num_ratings)))
@@ -135,7 +137,7 @@ beer_eda2[beer_eda2$location_id != beer_eda2$loc_id & beer_eda2$location != "", 
 # Will just keep loc_id
 
 names(beer_eda2)
-beer_eda3 = beer_eda2[,c(2:11,18:19,13:17)]
+beer_eda3 = beer_eda2[,c(1:4,21:22,5:17,25:26,19:20,23:24)]
 names(beer_eda3)
 
 
@@ -145,22 +147,21 @@ write.csv(beer_eda3, file = paste0(wd,"/beer_eda.csv"))
 # Population dataframe
 pop = read.csv("population.csv")
 names(pop)
-summary(pop)
-apply(pop,2,function(y) as.character(gsub(",","",y)))
-pop$postal_code_id = as.character(gsub(",","",pop$postal_code_id))
+pop = as_data_frame(apply(pop,2,function(y) as.character(gsub(",","",y))))
+
 pop$year = as.factor(gsub(",","",pop$year))
-pop$name = as.character(pop$name)
 
 col.names = names(pop)
 col.names = col.names[c(4:51)]
-
+col.names
 pop[col.names] = sapply(pop[col.names],as.numeric)
 sapply(pop, class)
+head(pop, 30)
 summary(pop)
-
 names(pop)
 
 pop2 = pop
+
 # Creating the population bins
 pop2$under_18_m = rowSums(pop2[,c(5:8)], na.rm = T)
 pop2$x18_to_29_m = rowSums(pop2[,c(9:13)], na.rm = T)
@@ -177,6 +178,7 @@ pop2$x65_plus_f = rowSums(pop2[,c(46:51)], na.rm = T)
 names(pop2)
 pop_sub = pop2[,c(1:4,28,52:62)]
 names(pop_sub)
+head(pop_sub)
 names(pop_sub) = c("id","name","year","total_m","total_f","post_code","under_18_m","x18_to_29_m",
                    "x30_to_49_m","x50_to_64_m","x65_plus_m","under_18_f","x18_to_29_f","x30_to_49_f",
                    "x50_to_64_f","x65_plus_f")
