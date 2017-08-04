@@ -242,8 +242,63 @@ pop_eda$year = as.factor(pop_eda$year)
 
 write.csv(pop_eda, file = paste0(wd,"/pop_eda.csv"))
 
-# EDA and Graphics [TBU]
-beer_eda = beer_eda3
-summary(beer_eda)
-summary(pop_eda)
+# Loading Yelp Data
+yelp_data = read.csv("yelp_data.csv")
 
+summary(yelp_data)
+names(yelp_data)
+yelp_data = yelp_data[,c(2,5:8,1,9,10,3:4)]
+
+# Limit to just US states
+state_list = c("AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY",
+              "LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK",
+              "OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY")
+
+yelp = yelp_data[yelp_data$state %in% state_list, ]
+unique(yelp$state)
+
+summary(yelp)
+yelp[yelp$zip_code == "", ]
+
+head(yelp$latitude)
+
+yelp[yelp$id == 'bright-ideas-brewing-north-adams', c("latitude","longitude")] = c(42.701934, -73.113943)
+yelp[yelp$id == 'coin-haus-la-mesa', c("latitude","longitude")] = c(32.765961, -117.017677)
+
+# Cleaning up Zip Code Data
+yelp$zip_code = as.character(yelp$zip_code)
+
+for(i in 1:length(yelp$zip_code)) {
+  yelp$zip_code[i] = ifelse(nchar(yelp$zip_code[i]) == 3, paste0("00",yelp$zip_code[i]),
+                            ifelse(nchar(yelp$zip_code[i]) == 4, paste0("0",yelp$zip_code[i]),
+                                   yelp$zip_code[i]))
+}
+
+
+
+yelp[yelp$id == 'mispillion-river-brewing-milford', c("zip_code")] = c("19963")
+yelp[yelp$id == 'pizza-port-jamul', c("zip_code")] = c("91935")
+yelp[yelp$id == 'cisco-brew-pub-boston-2', c("zip_code")] = c("02128")
+
+summary(yelp)
+
+# Cleaning up Pricing info
+'%!in%' <- function(x,y)!('%in%'(x,y))
+
+yelp = yelp[yelp$price %in% c("$","$$","$$$","$$$$",""),]
+yelp$price = factor(yelp$price)
+summary(yelp$price)
+
+yelp$price[yelp$price == ""] = NA
+yelp$price = factor(yelp$price)
+
+yelp$state = factor(yelp$state)
+
+summary(yelp)
+
+# Getting rid of entry in South America
+yelp = yelp[yelp$latitude > 0,]
+
+summary(yelp)
+
+write.csv(yelp, file = paste0(wd,"/yelp_data.csv"))
